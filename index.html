@@ -1,46 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickNotes</title>
-  </head>
-  <body>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
 
     <header>
-      <h1>QuickNotes</h1>
-      <p>Your fast, simple note-taking app.</p>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-      </nav>
+        <h1>QuickNotes</h1>
+        <p>Simple notes for busy people.</p>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
     </header>
 
     <main>
-      <h2>My Notes</h2>
 
-      <section>
-        <h3>Add a Note</h3>
-        <form>
-          <label for="note-title">Title</label>
-          <input type="text" id="note-title" name="note-title" placeholder="Note title" />
+        <section>
+            <h2>Welcome to QuickNotes</h2>
+            <p>
+                QuickNotes is a simple website for creating and organizing
+                notes quickly and easily.
+            </p>
+        </section>
 
-          <label for="note-body">Note</label>
-          <textarea id="note-body" name="note-body" placeholder="Write your note here..."></textarea>
+        <section>
+            <h2>Quick Note</h2>
 
-          <button type="submit">Save Note</button>
-        </form>
-      </section>
+            <form id="note-form">
+                <label for="note-input">Write a note:</label>
 
-      <section>
-        <h3>Saved Notes</h3>
-        <p>No notes yet. Add one above to get started.</p>
-      </section>
+                <textarea
+                    id="note-input"
+                    name="note"
+                    rows="4"
+                    placeholder="Type your note here..."
+                ></textarea>
+
+                <button type="submit">Add Note</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>My Notes</h2>
+
+            <ul id="notes-list">
+                <li>Remember to complete my daily tasks.</li>
+                <li>Review my study notes.</li>
+                <li>Practice HTML and CSS.</li>
+            </ul>
+        </section>
+
     </main>
 
     <footer>
-      <p>&copy; 2026 QuickNotes. All rights reserved.</p>
+        <p>&copy; 2026 QuickNotes. All rights reserved.</p>
     </footer>
 
-  </body>
+</body>
 </html>
