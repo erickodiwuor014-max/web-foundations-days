@@ -1,4 +1,4 @@
-/* Reset */
+﻿/* Reset */
 *,
 *::before,
 *::after {
@@ -27,7 +27,7 @@ header h1 {
 }
 
 /* Navigation */
-nav ul {
+nav {
     display: flex;
     justify-content: center;
     gap: 16px;
@@ -148,7 +148,7 @@ footer {
         padding: 18px 12px;
     }
 
-    nav ul {
+    nav {
         gap: 12px;
     }
 
