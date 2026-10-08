@@ -60,3 +60,7 @@ CREATE INDEX idx\_enrolments\_course\_id
 
 ON enrolments(course\_id);
 
+I would choose SQL for this school system because the data has clear relationships between students, courses and enrolments. A relational SQL database is preferable because it provides strong data integrity through primary keys, foreign keys, unique constraints and transactions. These features are important for academic records because student enrolments and grades must remain accurate and consistent. SQL also makes it easy to use JOIN, GROUP BY and LEFT JOIN queries to retrieve related information. A NoSQL database could be useful for flexible or less structured data, but SQL is a better choice for this school system because its data has a clear and structured relational design.
+
+
+
