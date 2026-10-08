@@ -6,7 +6,7 @@
 
 
 
-The students table stores information about each student. It contains the student's ID, name and email address. The ID is the primary key, and the email address must be unique.
+The `students` table stores information about each student. It contains the student's ID, name and email address. The `student\_id` is the primary key and uniquely identifies each student. The email address is also UNIQUE so that two students cannot use the same email address.
 
 
 
@@ -14,7 +14,7 @@ The students table stores information about each student. It contains the studen
 
 
 
-The courses table stores information about the courses offered by the school. It contains the course ID and course name. The ID is the primary key.
+The `courses` table stores the courses offered by the school. It contains a `course\_id` as the primary key and the `course\_name` of each course.
 
 
 
@@ -22,7 +22,7 @@ The courses table stores information about the courses offered by the school. It
 
 
 
-The enrolments table records which students are enrolled in which courses. It contains the student ID, course ID and grade. It also has its own primary key.
+The `enrolments` table records the fact that a student is enrolled in a particular course. It contains the student's ID, the course ID and the student's grade. The `student\_id` and `course\_id` are foreign keys that connect the enrolments table to the students and courses tables. The combination of `student\_id` and `course\_id` is UNIQUE so that the same student cannot enrol in the same course twice.
 
 
 
@@ -30,15 +30,15 @@ The enrolments table records which students are enrolled in which courses. It co
 
 
 
-The relationship between students and enrolments is one-to-many because one student can have many enrolments, while each enrolment belongs to one student.
+There is a one-to-many relationship between students and enrolments. One student can have many enrolments, while each enrolment belongs to one student.
 
 
 
-The relationship between courses and enrolments is one-to-many because one course can have many enrolments, while each enrolment belongs to one course.
+There is also a one-to-many relationship between courses and enrolments. One course can have many enrolments, while each enrolment belongs to one course.
 
 
 
-Students and courses have a many-to-many relationship because one student can take many courses and one course can have many students. The enrolments table is needed as a join table to connect students and courses. It also stores information about the enrolment, such as the student's grade.
+Students and courses have a many-to-many relationship because one student can take many courses and one course can have many students. The `enrolments` table is needed as a join table to represent this many-to-many relationship. It also stores information specific to the relationship, such as the student's grade.
 
 
 
@@ -46,13 +46,17 @@ Students and courses have a many-to-many relationship because one student can ta
 
 
 
-I would add an index on `enrolments.student\_id` because it would make finding all enrolments belonging to a particular student faster, especially when the database becomes large.
+I would add an index on `enrolments.course\_id` because courses are frequently searched to find all students enrolled in a particular course. An index on this column can make those searches faster, especially when the database becomes larger.
 
 
 
-\## SQL or NoSQL
+For example:
 
 
 
-I would choose SQL for this school system because the data has clear relationships between students, courses and enrolments. A relational database such as SQLite makes it easy to enforce primary keys, foreign keys, unique emails and other rules. SQL also makes it easy to use JOIN and GROUP BY queries to retrieve related information. Therefore, SQL is a good choice for this structured system.
+```sql
+
+CREATE INDEX idx\_enrolments\_course\_id
+
+ON enrolments(course\_id);
 
