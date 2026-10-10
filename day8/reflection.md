@@ -1,0 +1,7 @@
+﻿# Day 8 Reflection
+
+The most difficult concept in this course was understanding how a system prevents two users from buying the same seat at the same time. Initially, I thought showing an available seat on the website was enough. I learned that the seat map can become outdated when many users make requests simultaneously. I overcame this by studying database transactions, conditional updates, row locks, and unique constraints. These concepts helped me understand why the database must make the final decision about seat ownership instead of relying on the browser or cache.
+
+The part of my capstone I would improve is the architecture and failure-handling explanation. Feedback on my earlier system design work showed me that a design document is incomplete if it only describes the main components. It should also explain how requests move through the system, what happens when services fail, how background jobs are retried, and why particular design choices were made. For TicketHub, I would improve the document further by adding load-test results, more detailed payment-failure scenarios, and a tested recovery plan for database outages.
+
+Next, I want to learn more about backend development, PostgreSQL transactions, API security, automated testing, and cloud deployment. I also want to practise load testing so I can compare capacity estimates with measured performance. My goal is to explain not only how a system should work, but also how it remains reliable when real users and unexpected failures put it under pressure.
