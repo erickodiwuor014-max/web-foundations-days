@@ -341,3 +341,43 @@ flowchart TD
 ## Conclusion
 
 TicketHub can handle ordinary browsing efficiently and protect correctness during a high-demand concert sale by combining a controlled waiting room, stateless horizontally scaled application servers, cached public data, and a transactional PostgreSQL database. The key invariant is that each physical seat can have only one active owner. Atomic conditional updates, row locks, idempotent payment handling, and database constraints enforce that invariant even when many users compete for the same seat.
+
+## 8. Atomic SQL Transaction for Seat Holds
+
+The database must be the final authority on whether a seat can be held. Checking availability in one query and updating it in a separate query creates a race condition: two buyers may both see the seat as available. TicketHub instead uses an atomic conditional update inside a database transaction.
+
+### PostgreSQL example
+
+```sql
+BEGIN;
+
+UPDATE seats
+SET status = 'held',
+    held_by_user_id = :user_id,
+    hold_expires_at = CURRENT_TIMESTAMP + INTERVAL '5 minutes'
+WHERE id = :seat_id
+  AND (
+      status = 'available'
+      OR (
+          status = 'held'
+          AND hold_expires_at <= CURRENT_TIMESTAMP
+      )
+  )
+RETURNING id;
+
+-- Application checks the number of rows returned.
+-- If zero rows are returned, the seat is unavailable:
+-- ROLLBACK;
+-- If exactly one row is returned, the hold succeeded:
+-- COMMIT;
+```
+
+### Why this prevents double-booking
+
+PostgreSQL coordinates concurrent updates to the same row. If two buyers attempt to hold the same available seat, one update succeeds first. The other update must wait for the competing transaction to finish, then PostgreSQL evaluates the condition against the current row state. Since the seat is now held and its hold has not expired, the second update affects zero rows.
+
+The application must commit only when the expected seat or seats have been successfully held. If any requested seat cannot be held, it rolls back the entire transaction so the buyer does not receive only part of a multi-seat booking. For multiple seats, TicketHub should lock or update them in a consistent order to reduce deadlocks.
+
+The five-minute expiry allows another buyer to claim a seat after an abandoned hold expires. A background worker can clean up expired holds, but correctness must not depend on that worker running on time: the conditional update checks the expiry itself.
+
+Payment processing happens separately. A successful hold is not yet a completed purchase; TicketHub confirms the order only after verified payment and uses idempotency keys to handle retries safely.
